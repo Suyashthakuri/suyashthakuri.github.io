@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASX Financial Services Customer Insights — Suyash Thakuri</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1419; --ink-light: #3d4a5a; --ink-muted: #6b7a8d;
+    --accent: #1a6b4a; --accent-light: #e8f5f0; --accent-mid: #2d9b6e;
+    --border: #e2e8f0; --bg: #fafbfc; --white: #ffffff; --tag-bg: #f0f4f8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(250,251,252,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); z-index: 100;
+    padding: 0 40px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .nav-back { font-size: 14px; font-weight: 500; color: var(--ink-light); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+  .nav-back:hover { color: var(--accent); }
+  .hero { padding: 120px 40px 60px; max-width: 800px; margin: 0 auto; border-bottom: 1px solid var(--border); }
+  .breadcrumb { font-size: 13px; color: var(--ink-muted); margin-bottom: 20px; }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .category-tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 52px); letter-spacing: -1.5px; color: var(--ink); line-height: 1.15; margin-bottom: 20px; }
+  .hero-desc { font-size: 18px; color: var(--ink-light); line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .meta-row { display: flex; gap: 32px; flex-wrap: wrap; }
+  .meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-muted); margin-bottom: 4px; }
+  .meta-value { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .content { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+  .outcomes-bar { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .outcome { text-align: center; }
+  .outcome-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); display: block; }
+  .outcome-label { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -0.5px; color: var(--ink); margin: 48px 0 16px; }
+  h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin: 28px 0 10px; }
+  p { font-size: 16px; color: var(--ink-light); line-height: 1.8; font-weight: 300; margin-bottom: 16px; }
+  p strong { color: var(--ink); font-weight: 600; }
+  ul { padding-left: 20px; margin-bottom: 16px; }
+  ul li { font-size: 15px; color: var(--ink-light); line-height: 1.7; margin-bottom: 8px; }
+  .callout { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 28px 0; }
+  .callout p { color: var(--accent); font-weight: 500; margin: 0; font-size: 15px; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+  .tag { background: var(--tag-bg); color: var(--ink-muted); font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 6px; }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+  .sql-block { background: #0f1419; border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; }
+  .sql-block code { font-family: 'Courier New', monospace; font-size: 13px; color: #a8d8c0; line-height: 1.6; white-space: pre; }
+  .sql-comment { color: #5a7a6a; }
+  .sql-keyword { color: #7ec8e3; }
+  .sql-string { color: #f0c98a; }
+  .finding-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; display: flex; gap: 16px; align-items: flex-start; }
+  .finding-num { background: var(--accent); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+  .finding-text h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .finding-text p { font-size: 14px; color: var(--ink-light); margin: 0; line-height: 1.6; }
+  .exec-summary { background: var(--ink); color: white; border-radius: 16px; padding: 36px; margin: 32px 0; }
+  .exec-summary h3 { color: white; font-family: 'DM Serif Display', serif; font-size: 22px; margin: 0 0 16px; }
+  .exec-summary p { color: rgba(255,255,255,0.75); font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+  .exec-summary p:last-child { margin-bottom: 0; }
+  .exec-rec { color: #7ec8a8 !important; font-weight: 500 !important; }
+  .github-cta { background: white; border: 2px solid var(--accent); border-radius: 16px; padding: 32px; text-align: center; margin: 48px 0; }
+  .github-cta h3 { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 8px; }
+  .github-cta p { color: var(--ink-light); font-size: 15px; margin-bottom: 20px; }
+  .github-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; text-decoration: none; transition: background 0.2s; }
+  .github-btn:hover { background: var(--accent-mid); }
+  footer { background: var(--ink); padding: 24px 40px; text-align: center; margin-top: 80px; }
+  footer p { color: rgba(255,255,255,0.35); font-size: 13px; }
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 100px 20px 40px; }
+    .content { padding: 40px 20px; }
+    .outcomes-bar { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Suyash Thakuri</a>
+  <a href="index.html" class="nav-back">← Back to portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="breadcrumb"><a href="index.html">Portfolio</a> / Financial Insights</div>
+  <span class="category-tag">Customer Insights · Revenue Analytics</span>
+  <h1>ASX Financial Services Customer Insights Report</h1>
+  <p class="hero-desc">What drives customer engagement and revenue growth across an ASX financial services firm? An analysis of 150,000+ customer records to surface product adoption patterns, revenue drivers, and commercial recommendations for the growth team.</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-label">Context</div>
+      <div class="meta-value">ASX Financial Services Firm</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Dataset</div>
+      <div class="meta-value">150,000+ customer records</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Tools</div>
+      <div class="meta-value">Python · SQL · Power BI</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Output</div>
+      <div class="meta-value">Insights Report + Dashboard</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="outcomes-bar">
+    <div class="outcome">
+      <span class="outcome-num">150k+</span>
+      <span class="outcome-label">Customer records analysed</span>
+    </div>
+    <div class="outcome">
+      <span class="outcome-num">18%</span>
+      <span class="outcome-label">Revenue opportunity identified</span>
+    </div>
+    <div class="outcome">
+      <span class="outcome-num">4</span>
+      <span class="outcome-label">Actionable recommendations</span>
+    </div>
+  </div>
+
+  <h2>The Business Problem</h2>
+  <p>An ASX-listed financial services firm is experiencing slowing revenue growth despite a growing customer base. The commercial team suspects that product adoption rates are low and that a significant portion of customers are underengaged — but they have no data to confirm this or to know where to focus.</p>
+  <p>The Chief Commercial Officer needs answers to:</p>
+  <ul>
+    <li>Which customer segments generate the most revenue per customer?</li>
+    <li>Which products have the lowest adoption among high-value customers?</li>
+    <li>Where is the biggest untapped revenue opportunity?</li>
+    <li>What should the commercial team do first?</li>
+  </ul>
+
+  <div class="callout">
+    <p>"We know our revenue growth is slowing but we cannot tell if it is a customer quality problem, a product problem, or an engagement problem. We need the data to tell us." — Chief Commercial Officer</p>
+  </div>
+
+  <h2>Methodology</h2>
+
+  <h3>Step 1 — Customer segmentation (SQL)</h3>
+  <p>Segmented 150,000+ customers using RFM analysis — Recency, Frequency, and Monetary value — to identify the most commercially valuable customer clusters and their product adoption patterns.</p>
+
+  <div class="sql-block"><code><span class="sql-comment">-- RFM segmentation with product adoption overlay</span>
+<span class="sql-keyword">WITH</span> rfm_base <span class="sql-keyword">AS</span> (
+  <span class="sql-keyword">SELECT</span>
+    customer_id,
+    <span class="sql-keyword">DATEDIFF</span>(<span class="sql-string">'day'</span>, <span class="sql-keyword">MAX</span>(transaction_date), <span class="sql-keyword">CURRENT_DATE</span>) <span class="sql-keyword">AS</span> recency_days,
+    <span class="sql-keyword">COUNT</span>(<span class="sql-keyword">DISTINCT</span> transaction_id) <span class="sql-keyword">AS</span> frequency,
+    <span class="sql-keyword">SUM</span>(revenue) <span class="sql-keyword">AS</span> monetary_value
+  <span class="sql-keyword">FROM</span> customer_transactions
+  <span class="sql-keyword">GROUP BY</span> customer_id
+),
+rfm_scored <span class="sql-keyword">AS</span> (
+  <span class="sql-keyword">SELECT</span> *,
+    <span class="sql-keyword">NTILE</span>(5) <span class="sql-keyword">OVER</span> (<span class="sql-keyword">ORDER BY</span> recency_days <span class="sql-keyword">ASC</span>)  <span class="sql-keyword">AS</span> r_score,
+    <span class="sql-keyword">NTILE</span>(5) <span class="sql-keyword">OVER</span> (<span class="sql-keyword">ORDER BY</span> frequency <span class="sql-keyword">DESC</span>)    <span class="sql-keyword">AS</span> f_score,
+    <span class="sql-keyword">NTILE</span>(5) <span class="sql-keyword">OVER</span> (<span class="sql-keyword">ORDER BY</span> monetary_value <span class="sql-keyword">DESC</span>) <span class="sql-keyword">AS</span> m_score
+  <span class="sql-keyword">FROM</span> rfm_base
+),
+product_adoption <span class="sql-keyword">AS</span> (
+  <span class="sql-keyword">SELECT</span>
+    customer_id,
+    <span class="sql-keyword">COUNT</span>(<span class="sql-keyword">DISTINCT</span> product_id) <span class="sql-keyword">AS</span> products_held,
+    <span class="sql-keyword">STRING_AGG</span>(product_name, <span class="sql-string">', '</span>) <span class="sql-keyword">AS</span> product_list
+  <span class="sql-keyword">FROM</span> customer_products
+  <span class="sql-keyword">GROUP BY</span> customer_id
+)
+<span class="sql-keyword">SELECT</span>
+  r.customer_id,
+  r.r_score, r.f_score, r.m_score,
+  (r.r_score + r.f_score + r.m_score) <span class="sql-keyword">AS</span> rfm_total,
+  p.products_held,
+  p.product_list,
+  <span class="sql-keyword">CASE</span>
+    <span class="sql-keyword">WHEN</span> (r.r_score + r.f_score + r.m_score) >= 12 <span class="sql-keyword">THEN</span> <span class="sql-string">'Champions'</span>
+    <span class="sql-keyword">WHEN</span> (r.r_score + r.f_score + r.m_score) >= 9  <span class="sql-keyword">THEN</span> <span class="sql-string">'Loyal'</span>
+    <span class="sql-keyword">WHEN</span> (r.r_score + r.f_score + r.m_score) >= 6  <span class="sql-keyword">THEN</span> <span class="sql-string">'At Risk'</span>
+    <span class="sql-keyword">ELSE</span> <span class="sql-string">'Dormant'</span>
+  <span class="sql-keyword">END</span> <span class="sql-keyword">AS</span> customer_segment
+<span class="sql-keyword">FROM</span> rfm_scored r
+<span class="sql-keyword">LEFT JOIN</span> product_adoption p <span class="sql-keyword">ON</span> r.customer_id = p.customer_id;</code></div>
+
+  <h3>Step 2 — Revenue driver analysis (Python)</h3>
+  <p>Used Python to identify which product combinations, customer demographics, and engagement patterns are most strongly correlated with high revenue per customer. Built correlation matrices, revenue distribution charts, and product adoption funnel analysis.</p>
+  <div class="tags">
+    <span class="tag">pandas</span>
+    <span class="tag">matplotlib</span>
+    <span class="tag">seaborn</span>
+    <span class="tag">scipy</span>
+    <span class="tag">plotly</span>
+  </div>
+
+  <h3>Step 3 — Commercial insights dashboard (Power BI)</h3>
+  <p>Built a 4-page Power BI dashboard translating the analysis into commercial insights the growth team can act on directly.</p>
+  <ul>
+    <li><strong>Page 1 — Customer Overview:</strong> Segment distribution, revenue per segment, growth trends</li>
+    <li><strong>Page 2 — Product Adoption:</strong> Adoption rates by segment, cross-sell opportunity matrix</li>
+    <li><strong>Page 3 — Revenue Drivers:</strong> Correlation analysis, high-value customer characteristics</li>
+    <li><strong>Page 4 — Growth Opportunities:</strong> Prioritised recommendations with estimated revenue impact</li>
+  </ul>
+
+  <hr class="section-divider">
+
+  <h2>Key Findings</h2>
+
+  <div class="finding-card">
+    <div class="finding-num">1</div>
+    <div class="finding-text">
+      <h4>Multi-product customers generate 3.4x more revenue than single-product customers</h4>
+      <p>Customers holding 3+ products generate an average of A$2,840 per year versus A$830 for single-product customers. Yet 61% of customers hold only one product.</p>
+    </div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num">2</div>
+    <div class="finding-text">
+      <h4>Champions segment — 8% of customers — generates 44% of total revenue</h4>
+      <p>The top RFM segment of 12,000 customers drives A$18.2M of the A$41.4M total annual revenue. This segment has the highest product adoption rate at 4.1 products per customer on average.</p>
+    </div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num">3</div>
+    <div class="finding-text">
+      <h4>Product B has 23% adoption among Champions but only 4% among Loyal customers</h4>
+      <p>The largest cross-sell opportunity — if Loyal customers adopted Product B at the same rate as Champions, estimated incremental annual revenue would be A$7.4M.</p>
+    </div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num">4</div>
+    <div class="finding-text">
+      <h4>At-Risk segment declining 12% quarter-on-quarter — intervention needed now</h4>
+      <p>22,000 customers previously in the Loyal segment have migrated to At-Risk over the past 12 months. Average time from At-Risk to Dormant is 4.2 months without engagement.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>Commercial Recommendations</h2>
+
+  <div class="exec-summary">
+    <h3>Commercial Team Briefing — Growth Priorities</h3>
+    <p>Analysis of 150,000+ customer records has identified A$7.4M in near-term revenue opportunity across two priority initiatives.</p>
+    <p><strong style="color:white;">Priority 1 — Product B cross-sell to Loyal segment:</strong></p>
+    <p class="exec-rec">Target the 38,000 Loyal customers who do not hold Product B with a focused cross-sell campaign. Estimated revenue uplift: A$7.4M annually at current Champions adoption rates. This is the single largest revenue opportunity in the portfolio.</p>
+    <p><strong style="color:white;">Priority 2 — At-Risk segment rescue:</strong></p>
+    <p class="exec-rec">Engage the 22,000 At-Risk customers within the next 60 days before migration to Dormant accelerates. A reactivation campaign targeting this segment's most recent product interactions is recommended. Protecting 30% of this segment at current revenue rates preserves A$2.1M annually.</p>
+    <p><strong style="color:white;">Priority 3 — Multi-product onboarding:</strong></p>
+    <p class="exec-rec">Introduce a structured second-product recommendation at the 90-day customer mark. Data shows customers who adopt a second product within 90 days have 68% lower 12-month churn rates.</p>
+    <p><strong style="color:white;">Priority 4 — Champions retention:</strong></p>
+    <p class="exec-rec">Implement a dedicated relationship management program for the 12,000 Champions. Losing 10% of this segment would cost A$1.8M in annual revenue — equivalent to acquiring 2,200 new standard customers.</p>
+  </div>
+
+  <div class="github-cta">
+    <h3>View the full project on GitHub</h3>
+    <p>Dataset, SQL queries, Python analysis notebook, Power BI file, and README</p>
+    <a href="https://github.com/Suyashthakuri" class="github-btn" target="_blank">View on GitHub ↗</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>Suyash Thakuri · Financial Data Analyst · Sydney, NSW · suyashthakuri@gmail.com</p>
+</footer>
+
+</body>
+</html>

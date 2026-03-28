@@ -1,0 +1,53 @@
+# How to deploy your portfolio to GitHub Pages
+# This takes about 5 minutes. Zero cost. Your site will be live at:
+# https://suyashthakuri.github.io
+
+## STEP 1 — Create a new GitHub repository
+
+1. Go to github.com and sign in
+2. Click the + icon top right → New repository
+3. Name it exactly: suyashthakuri.github.io
+   (must match your username exactly)
+4. Set to Public
+5. Click Create repository
+
+## STEP 2 — Upload the files
+
+1. Click "uploading an existing file" on the new repo page
+2. Drag and drop ALL four files at once:
+   - index.html
+   - project-brokerage.html
+   - project-insights.html
+3. Scroll down, click "Commit changes"
+
+## STEP 3 — Enable GitHub Pages
+
+1. Go to your repo Settings (top menu)
+2. Click Pages (left sidebar)
+3. Under Source → select "Deploy from a branch"
+4. Branch → select "main"
+5. Folder → select "/ (root)"
+6. Click Save
+
+## STEP 4 — Your site is live
+
+Wait 2-3 minutes then visit:
+https://suyashthakuri.github.io
+
+That is it. Your portfolio is live.
+
+## STEP 5 — Add the link to your resume and LinkedIn
+
+Resume header: add your website URL next to GitHub and LinkedIn
+LinkedIn: Edit profile → Website → add https://suyashthakuri.github.io
+
+## Updating the site later
+
+To update any page:
+1. Go to the repo on GitHub
+2. Click the file you want to edit
+3. Click the pencil icon
+4. Make changes
+5. Click Commit changes
+
+Changes go live within 1-2 minutes.

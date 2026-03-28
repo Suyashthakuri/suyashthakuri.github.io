@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suyash Thakuri — Financial Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1419;
+    --ink-light: #3d4a5a;
+    --ink-muted: #6b7a8d;
+    --accent: #1a6b4a;
+    --accent-light: #e8f5f0;
+    --accent-mid: #2d9b6e;
+    --border: #e2e8f0;
+    --bg: #fafbfc;
+    --white: #ffffff;
+    --tag-bg: #f0f4f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(250,251,252,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 140px 40px 100px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 6vw, 68px);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--ink-light);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--accent-mid); transform: translateY(-1px); }
+  .btn-secondary {
+    color: var(--ink-light);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: white;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: white;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+  }
+  .stats-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .stat {
+    text-align: center;
+    padding: 16px;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--accent);
+    letter-spacing: -1px;
+    display: block;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 4px;
+  }
+
+  /* SECTION */
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    letter-spacing: -0.8px;
+    color: var(--ink);
+    margin-bottom: 48px;
+    line-height: 1.2;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    gap: 28px;
+  }
+  .project-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 32px rgba(26,107,74,0.1);
+    transform: translateY(-2px);
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, white 85%, var(--accent-light));
+  }
+  .project-card.featured::before { opacity: 1; }
+  .project-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .project-category {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+  .project-featured-tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+  }
+  .project-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .project-problem {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .project-card p {
+    color: var(--ink-light);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .project-outcomes {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .outcome-pill {
+    background: var(--tag-bg);
+    color: var(--ink-light);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+  .outcome-pill.highlight {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .project-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--ink-muted);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .project-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .project-link:hover { text-decoration: underline; }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .skill-group {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .skill-group h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .skill-item {
+    background: var(--tag-bg);
+    color: var(--ink-light);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+  }
+
+  /* EXPERIENCE */
+  .exp-list { display: grid; gap: 20px; }
+  .exp-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+  }
+  .exp-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .exp-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .exp-desc {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+  .exp-date {
+    font-size: 13px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    padding-top: 4px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--ink-light);
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .about-text strong { color: var(--ink); font-weight: 600; }
+  .credentials {
+    display: grid;
+    gap: 14px;
+  }
+  .credential {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .credential-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .credential-sub {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--ink);
+    padding: 80px 40px;
+    text-align: center;
+  }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: white;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .contact-section p {
+    color: rgba(255,255,255,0.6);
+    font-size: 16px;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .contact-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .contact-link:hover { background: rgba(255,255,255,0.18); }
+  .contact-link.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .contact-link.primary:hover { background: var(--accent-mid); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 24px 40px;
+    text-align: center;
+  }
+  footer p {
+    color: rgba(255,255,255,0.35);
+    font-size: 13px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * {
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero > *:nth-child(4) { animation-delay: 0.4s; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 120px 20px 60px; }
+    section { padding: 60px 20px; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .skills-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Suyash Thakuri</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-tag">Financial Data Analyst · Sydney, NSW</span>
+  <h1>Turning financial data<br>into <em>decisions</em></h1>
+  <p class="hero-sub">4+ years in financial services across brokerage, investment management, and data analytics. I build client analytics, revenue dashboards, and automated reporting tools that help sales and finance teams act faster.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View my work ↓</a>
+    <a href="mailto:suyashthakuri@gmail.com" class="btn-secondary">Get in touch</a>
+    <a href="https://github.com/Suyashthakuri" class="btn-secondary" target="_blank">GitHub ↗</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <span class="stat-num">4+</span>
+      <span class="stat-label">Years in financial services</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">100k+</span>
+      <span class="stat-label">Research subscribers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Portfolio projects</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">85%</span>
+      <span class="stat-label">Reporting time reduced</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Portfolio</div>
+  <h2 class="section-title">Selected projects</h2>
+
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 - FEATURED -->
+    <a href="project-brokerage.html" class="project-card featured">
+      <div class="project-meta">
+        <span class="project-category">Client Analytics</span>
+        <span class="project-featured-tag">⭐ Featured</span>
+      </div>
+      <h3>Brokerage Client Revenue & Churn Analysis</h3>
+      <div class="project-problem">Business Problem</div>
+      <p>Which clients generate 80% of brokerage revenue — and who is about to leave? Built for an ASX brokerage context, this end-to-end analysis identifies high-value segments, churn risk signals, and delivers a written executive recommendation to the sales team.</p>
+      <div class="project-outcomes">
+        <span class="outcome-pill highlight">200,000+ transactions analysed</span>
+        <span class="outcome-pill highlight">A$3.2M revenue at risk identified</span>
+        <span class="outcome-pill">Executive report delivered</span>
+      </div>
+      <div class="project-tags">
+        <span class="tag">SQL</span>
+        <span class="tag">Python</span>
+        <span class="tag">Power BI</span>
+        <span class="tag">DAX</span>
+        <span class="tag">Churn Analysis</span>
+        <span class="tag">Client Segmentation</span>
+      </div>
+      <span class="project-link">View case study →</span>
+    </a>
+
+    <!-- PROJECT 2 - FEATURED -->
+    <a href="project-insights.html" class="project-card featured">
+      <div class="project-meta">
+        <span class="project-category">Financial Insights</span>
+        <span class="project-featured-tag">⭐ Featured</span>
+      </div>
+      <h3>ASX Financial Services Customer Insights Report</h3>
+      <div class="project-problem">Business Problem</div>
+      <p>What drives customer engagement and revenue growth across an ASX financial services firm? This analysis combines trading behaviour, product adoption, and revenue data to surface actionable insights for the commercial team.</p>
+      <div class="project-outcomes">
+        <span class="outcome-pill highlight">150,000+ customer records</span>
+        <span class="outcome-pill highlight">18% revenue opportunity identified</span>
+        <span class="outcome-pill">Commercial report delivered</span>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Power BI</span>
+        <span class="tag">Revenue Analytics</span>
+        <span class="tag">Customer Insights</span>
+      </div>
+      <span class="project-link">View case study →</span>
+    </a>
+
+    <!-- PROJECT 3 -->
+    <a href="https://github.com/Suyashthakuri/asx-insurer-kpi-dashboard-" class="project-card" target="_blank">
+      <div class="project-meta">
+        <span class="project-category">BI Dashboard</span>
+      </div>
+      <h3>ASX General Insurer KPI Dashboard</h3>
+      <p>End-to-end Power BI reporting solution for QBE, IAG, and Suncorp — star schema data model, 9 DAX measures, 5 SQL window function queries, and 4-page drill-through report.</p>
+      <div class="project-tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">SQL</span>
+        <span class="tag">DAX</span>
+        <span class="tag">Star Schema</span>
+      </div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <!-- PROJECT 4 -->
+    <a href="https://github.com/Suyashthakuri/fpa-variance-report" class="project-card" target="_blank">
+      <div class="project-meta">
+        <span class="project-category">FP&A Modelling</span>
+      </div>
+      <h3>FP&A Budget vs. Actual Variance Report</h3>
+      <p>12-month FP&A management model — 504 data points across 6 product lines and 7 KPIs. YTD tracking, full-year forecast, and CFO-level variance commentary.</p>
+      <div class="project-tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">SQL</span>
+        <span class="tag">DAX</span>
+        <span class="tag">FP&A</span>
+      </div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <!-- PROJECT 5 -->
+    <a href="https://github.com/Suyashthakuri/Investment-Banking" class="project-card" target="_blank">
+      <div class="project-meta">
+        <span class="project-category">Investment Research</span>
+      </div>
+      <h3>Financial Tools & Investment Research Portfolio</h3>
+      <p>5 production tools built at NMB Capital: PE/PBV tracker, debenture YTM valuation, DCF model for Foshan Haitian IPO, published equity research, and algorithmic trading strategy.</p>
+      <div class="project-tags">
+        <span class="tag">Excel VBA</span>
+        <span class="tag">DCF</span>
+        <span class="tag">Fixed Income</span>
+        <span class="tag">Python</span>
+      </div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <!-- PROJECT 6 -->
+    <a href="https://github.com/Suyashthakuri/Analysis-of-Data-Using-Machine-learning" class="project-card" target="_blank">
+      <div class="project-meta">
+        <span class="project-category">Machine Learning</span>
+      </div>
+      <h3>Melbourne Airbnb Price Prediction Model</h3>
+      <p>Compared Linear Regression, Decision Tree, Random Forest, and XGBoost — achieving MAE of A$43.8 using XGBoost with GridSearchCV hyperparameter tuning.</p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">XGBoost</span>
+        <span class="tag">Random Forest</span>
+        <span class="tag">Scikit-learn</span>
+      </div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Capabilities</div>
+  <h2 class="section-title">Skills & tools</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h4>Analytics & Reporting</h4>
+      <div class="skill-items">
+        <span class="skill-item">Client Analytics</span>
+        <span class="skill-item">Sales Performance Analysis</span>
+        <span class="skill-item">Revenue Reporting</span>
+        <span class="skill-item">KPI Dashboards</span>
+        <span class="skill-item">Variance Analysis</span>
+        <span class="skill-item">Churn Analysis</span>
+        <span class="skill-item">Customer Segmentation</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Data & BI Tools</h4>
+      <div class="skill-items">
+        <span class="skill-item">Power BI</span>
+        <span class="skill-item">DAX</span>
+        <span class="skill-item">Power Query</span>
+        <span class="skill-item">SQL</span>
+        <span class="skill-item">Python (pandas)</span>
+        <span class="skill-item">Excel VBA</span>
+        <span class="skill-item">Tableau</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Financial Analysis</h4>
+      <div class="skill-items">
+        <span class="skill-item">FP&A Modelling</span>
+        <span class="skill-item">DCF Valuation</span>
+        <span class="skill-item">Budget vs. Actual</span>
+        <span class="skill-item">Investment Research</span>
+        <span class="skill-item">Fixed Income</span>
+        <span class="skill-item">Equity Valuation</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Domain Expertise</h4>
+      <div class="skill-items">
+        <span class="skill-item">ASX Brokerage</span>
+        <span class="skill-item">Equity Markets</span>
+        <span class="skill-item">Wealth Management</span>
+        <span class="skill-item">Fund Reporting</span>
+        <span class="skill-item">CFD & ETF Products</span>
+        <span class="skill-item">Financial Services</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-company">Tiger Brokers Australia — ASX & Nasdaq Listed Brokerage</div>
+        <div class="exp-title">Investment Research & Data Analyst</div>
+        <div class="exp-desc">Analysed ASX equity data across 30+ securities, built Power BI dashboards reducing reporting time by 85%, automated data workflows via Excel VBA, and conducted DCF and comparable company analysis for client recommendations.</div>
+      </div>
+      <div class="exp-date">May – Sep 2025<br>Sydney, NSW</div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-company">Maqro Capital — Australian Equity Advisory Firm</div>
+        <div class="exp-title">Equity & Sales Associate</div>
+        <div class="exp-desc">Built live watchlists and variance dashboards for HNW client portfolios, developed client-facing investment insight reports, and supported senior adviser decision-making with integrated performance data.</div>
+      </div>
+      <div class="exp-date">Oct – Nov 2025<br>Sydney, NSW</div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-company">Tiger Brokers Australia — ASX & Nasdaq Listed Brokerage</div>
+        <div class="exp-title">Client & Sales Associate</div>
+        <div class="exp-desc">Managed 200+ active client accounts, built weekly sales performance dashboards, conducted client segmentation analysis, and identified churn signals — contributing to 15% AUM growth across the portfolio.</div>
+      </div>
+      <div class="exp-date">Jun 2024 – Apr 2025<br>Sydney, NSW</div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-company">NMB Capital — Nepal's Largest Investment Bank</div>
+        <div class="exp-title">Senior Research & Equity Investment Analyst</div>
+        <div class="exp-desc">Published quarterly equity research to 100,000+ subscribers, managed investment strategy for a NPR 100M+ fund rated AMC 2 (highest category), and prepared monthly board-level investment committee reports.</div>
+      </div>
+      <div class="exp-date">Mar 2021 – Dec 2023<br>Kathmandu, Nepal</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Background</div>
+  <h2 class="section-title">About me</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I am a <strong>Financial Data Analyst</strong> based in Sydney with 4+ years of experience across investment management and financial services in Australia and internationally.</p>
+      <p>My background is unusual — I combine <strong>deep investment research expertise</strong> (published research, fund management, institutional clients) with hands-on <strong>technical analytics capability</strong> (Power BI, SQL, Python, Excel VBA).</p>
+      <p>I am most effective in roles where <strong>data meets commercial decisions</strong> — client analytics, revenue reporting, and insights that help sales and finance teams act faster and smarter.</p>
+      <p>I am <strong>immediately available</strong>, hold full Australian work rights, and am open to roles across Sydney, Melbourne, and remote.</p>
+    </div>
+    <div class="credentials">
+      <div class="credential">
+        <div class="credential-title">Master of Business Analytics</div>
+        <div class="credential-sub">Macquarie University, Sydney · 2024–2025</div>
+      </div>
+      <div class="credential">
+        <div class="credential-title">CA Intermediate — Both Groups Cleared</div>
+        <div class="credential-sub">ICAI · Pass rate ~10–15%</div>
+      </div>
+      <div class="credential">
+        <div class="credential-title">ACCA — 9/13 Papers</div>
+        <div class="credential-sub">Association of Chartered Certified Accountants</div>
+      </div>
+      <div class="credential">
+        <div class="credential-title">PL-300 Power BI Data Analyst</div>
+        <div class="credential-sub">Microsoft · In Progress</div>
+      </div>
+      <div class="credential">
+        <div class="credential-title">Published Research</div>
+        <div class="credential-sub">Quarterly reports · 100,000+ subscribers · nmbcl.com.np</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <h2>Let's work together</h2>
+    <p>Open to Financial Data Analyst, Client Analytics, Insights Analyst, and Reporting Analyst roles across Australia.</p>
+    <div class="contact-links">
+      <a href="mailto:suyashthakuri@gmail.com" class="contact-link primary">✉ suyashthakuri@gmail.com</a>
+      <a href="https://linkedin.com/in/suyash-thakuri" class="contact-link" target="_blank">LinkedIn ↗</a>
+      <a href="https://github.com/Suyashthakuri" class="contact-link" target="_blank">GitHub ↗</a>
+      <a href="tel:+61435009473" class="contact-link">+61 435 009 473</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Suyash Thakuri · Financial Data Analyst · Sydney, NSW · suyashthakuri@gmail.com</p>
+</footer>
+
+</body>
+</html>

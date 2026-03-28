@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brokerage Client Revenue & Churn Analysis — Suyash Thakuri</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1419; --ink-light: #3d4a5a; --ink-muted: #6b7a8d;
+    --accent: #1a6b4a; --accent-light: #e8f5f0; --accent-mid: #2d9b6e;
+    --border: #e2e8f0; --bg: #fafbfc; --white: #ffffff; --tag-bg: #f0f4f8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(250,251,252,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); z-index: 100;
+    padding: 0 40px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .nav-back { font-size: 14px; font-weight: 500; color: var(--ink-light); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+  .nav-back:hover { color: var(--accent); }
+
+  .hero {
+    padding: 120px 40px 60px;
+    max-width: 800px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .breadcrumb { font-size: 13px; color: var(--ink-muted); margin-bottom: 20px; }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .category-tag {
+    display: inline-block; background: var(--accent-light); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 5px 14px;
+    border-radius: 20px; margin-bottom: 20px; text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px); letter-spacing: -1.5px;
+    color: var(--ink); line-height: 1.15; margin-bottom: 20px;
+  }
+  .hero-desc { font-size: 18px; color: var(--ink-light); line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .meta-row { display: flex; gap: 32px; flex-wrap: wrap; }
+  .meta-item { }
+  .meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-muted); margin-bottom: 4px; }
+  .meta-value { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+  .content { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+
+  .outcomes-bar {
+    background: white; border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px; margin-bottom: 48px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .outcome { text-align: center; }
+  .outcome-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); display: block; }
+  .outcome-label { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+
+  h2 { font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -0.5px; color: var(--ink); margin: 48px 0 16px; }
+  h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin: 28px 0 10px; }
+  p { font-size: 16px; color: var(--ink-light); line-height: 1.8; font-weight: 300; margin-bottom: 16px; }
+  p strong { color: var(--ink); font-weight: 600; }
+  ul { padding-left: 20px; margin-bottom: 16px; }
+  ul li { font-size: 15px; color: var(--ink-light); line-height: 1.7; margin-bottom: 8px; }
+
+  .callout {
+    background: var(--accent-light); border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 28px 0;
+  }
+  .callout p { color: var(--accent); font-weight: 500; margin: 0; font-size: 15px; }
+
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+  .tag { background: var(--tag-bg); color: var(--ink-muted); font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 6px; }
+
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  .sql-block {
+    background: #0f1419; border-radius: 12px; padding: 24px;
+    margin: 20px 0; overflow-x: auto;
+  }
+  .sql-block code { font-family: 'Courier New', monospace; font-size: 13px; color: #a8d8c0; line-height: 1.6; white-space: pre; }
+  .sql-comment { color: #5a7a6a; }
+  .sql-keyword { color: #7ec8e3; }
+  .sql-string { color: #f0c98a; }
+
+  .finding-card {
+    background: white; border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; margin-bottom: 16px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .finding-num {
+    background: var(--accent); color: white; width: 32px; height: 32px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+  .finding-text h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .finding-text p { font-size: 14px; color: var(--ink-light); margin: 0; line-height: 1.6; }
+
+  .exec-summary {
+    background: var(--ink); color: white; border-radius: 16px;
+    padding: 36px; margin: 32px 0;
+  }
+  .exec-summary h3 { color: white; font-family: 'DM Serif Display', serif; font-size: 22px; margin: 0 0 16px; }
+  .exec-summary p { color: rgba(255,255,255,0.75); font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+  .exec-summary p:last-child { margin-bottom: 0; }
+  .exec-rec { color: #7ec8a8 !important; font-weight: 500 !important; }
+
+  .github-cta {
+    background: white; border: 2px solid var(--accent); border-radius: 16px;
+    padding: 32px; text-align: center; margin: 48px 0;
+  }
+  .github-cta h3 { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 8px; }
+  .github-cta p { color: var(--ink-light); font-size: 15px; margin-bottom: 20px; }
+  .github-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: white; padding: 14px 28px;
+    border-radius: 8px; font-size: 15px; font-weight: 500;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .github-btn:hover { background: var(--accent-mid); }
+
+  footer {
+    background: var(--ink); padding: 24px 40px; text-align: center; margin-top: 80px;
+  }
+  footer p { color: rgba(255,255,255,0.35); font-size: 13px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 100px 20px 40px; }
+    .content { padding: 40px 20px; }
+    .outcomes-bar { grid-template-columns: 1fr; }
+    .meta-row { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Suyash Thakuri</a>
+  <a href="index.html" class="nav-back">← Back to portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="breadcrumb"><a href="index.html">Portfolio</a> / Client Analytics</div>
+  <span class="category-tag">Client Analytics · Revenue Analysis</span>
+  <h1>Brokerage Client Revenue & Churn Analysis</h1>
+  <p class="hero-desc">Which clients generate 80% of brokerage revenue — and who is about to leave? An end-to-end analysis of 200,000+ transactions to identify high-value segments, churn signals, and deliver a written executive recommendation to the sales team.</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-label">Context</div>
+      <div class="meta-value">ASX Brokerage — Tiger Brokers</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Dataset</div>
+      <div class="meta-value">200,000+ transactions</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Tools</div>
+      <div class="meta-value">SQL · Python · Power BI · DAX</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Output</div>
+      <div class="meta-value">Dashboard + Executive Report</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- OUTCOMES -->
+  <div class="outcomes-bar">
+    <div class="outcome">
+      <span class="outcome-num">200k+</span>
+      <span class="outcome-label">Transactions analysed</span>
+    </div>
+    <div class="outcome">
+      <span class="outcome-num">A$3.2M</span>
+      <span class="outcome-label">Revenue at risk identified</span>
+    </div>
+    <div class="outcome">
+      <span class="outcome-num">47</span>
+      <span class="outcome-label">At-risk clients flagged</span>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <h2>The Business Problem</h2>
+  <p>An ASX-listed brokerage manages 500+ active client accounts across equity, ETF, and CFD products. The sales team has no visibility into which clients generate the most revenue, which are showing signs of disengagement, or where to prioritise retention effort.</p>
+  <p>The head of sales needs answers to three questions:</p>
+  <ul>
+    <li>Which 20% of clients generate 80% of brokerage revenue?</li>
+    <li>Which high-value clients are showing churn signals right now?</li>
+    <li>What actions should the sales team take this week?</li>
+  </ul>
+
+  <div class="callout">
+    <p>"We are losing high-value clients and we don't know until they are gone. We need to see the warning signs before it happens — not after." — Head of Sales</p>
+  </div>
+
+  <!-- APPROACH -->
+  <h2>Methodology</h2>
+
+  <h3>Step 1 — Data preparation and cleaning (SQL)</h3>
+  <p>Built a client transaction dataset covering 200,000+ trades across 500+ accounts over 24 months. Cleaned and structured the data using SQL — resolving duplicates, standardising product categories, and creating derived fields for analysis.</p>
+
+  <div class="sql-block"><code><span class="sql-comment">-- Client revenue segmentation query</span>
+<span class="sql-keyword">WITH</span> client_revenue <span class="sql-keyword">AS</span> (
+  <span class="sql-keyword">SELECT</span>
+    client_id,
+    client_name,
+    account_tier,
+    <span class="sql-keyword">SUM</span>(brokerage_fee) <span class="sql-keyword">AS</span> total_revenue,
+    <span class="sql-keyword">COUNT</span>(trade_id) <span class="sql-keyword">AS</span> trade_count,
+    <span class="sql-keyword">MAX</span>(trade_date) <span class="sql-keyword">AS</span> last_trade_date,
+    <span class="sql-keyword">ROUND</span>(
+      <span class="sql-keyword">SUM</span>(brokerage_fee) * 100.0 /
+      <span class="sql-keyword">SUM</span>(<span class="sql-keyword">SUM</span>(brokerage_fee)) <span class="sql-keyword">OVER</span>(),
+    2) <span class="sql-keyword">AS</span> revenue_share_pct
+  <span class="sql-keyword">FROM</span> client_transactions
+  <span class="sql-keyword">WHERE</span> trade_date >= <span class="sql-string">'2023-01-01'</span>
+  <span class="sql-keyword">GROUP BY</span> client_id, client_name, account_tier
+),
+ranked <span class="sql-keyword">AS</span> (
+  <span class="sql-keyword">SELECT</span> *,
+    <span class="sql-keyword">RANK</span>() <span class="sql-keyword">OVER</span> (<span class="sql-keyword">ORDER BY</span> total_revenue <span class="sql-keyword">DESC</span>) <span class="sql-keyword">AS</span> revenue_rank,
+    <span class="sql-keyword">CASE</span>
+      <span class="sql-keyword">WHEN</span> total_revenue >= 50000 <span class="sql-keyword">THEN</span> <span class="sql-string">'High Value'</span>
+      <span class="sql-keyword">WHEN</span> total_revenue >= 20000 <span class="sql-keyword">THEN</span> <span class="sql-string">'Growth'</span>
+      <span class="sql-keyword">WHEN</span> total_revenue >= 5000  <span class="sql-keyword">THEN</span> <span class="sql-string">'Standard'</span>
+      <span class="sql-keyword">ELSE</span> <span class="sql-string">'Low Value'</span>
+    <span class="sql-keyword">END</span> <span class="sql-keyword">AS</span> client_segment
+  <span class="sql-keyword">FROM</span> client_revenue
+)
+<span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> ranked
+<span class="sql-keyword">ORDER BY</span> revenue_rank;</code></div>
+
+  <h3>Step 2 — Churn risk scoring (Python)</h3>
+  <p>Built a Python churn risk model using four behavioural signals: days since last trade, AUM change over 90 days, trading frequency decline, and product adoption reduction. Each client received a risk score from 0–100.</p>
+
+  <div class="tags">
+    <span class="tag">pandas</span>
+    <span class="tag">numpy</span>
+    <span class="tag">scikit-learn</span>
+    <span class="tag">matplotlib</span>
+    <span class="tag">seaborn</span>
+  </div>
+
+  <h3>Step 3 — Power BI dashboard (4 pages)</h3>
+  <p>Built an executive Power BI dashboard with four pages covering the full client analytics story — from portfolio overview to individual at-risk account detail.</p>
+  <ul>
+    <li><strong>Page 1 — Executive Summary:</strong> Total revenue, client count by segment, top 10 clients, key risk indicators</li>
+    <li><strong>Page 2 — Client Segments:</strong> Pareto analysis, revenue concentration, segment trends over time</li>
+    <li><strong>Page 3 — Revenue Analysis:</strong> Product mix, monthly revenue trends, fee per client by tier</li>
+    <li><strong>Page 4 — At-Risk Clients:</strong> Churn risk scores, inactivity flags, AUM decline alerts, recommended actions</li>
+  </ul>
+
+  <hr class="section-divider">
+
+  <!-- FINDINGS -->
+  <h2>Key Findings</h2>
+
+  <div class="finding-card">
+    <div class="finding-num">1</div>
+    <div class="finding-text">
+      <h4>Top 18% of clients generate 80% of brokerage revenue</h4>
+      <p>91 high-value clients out of 512 total accounts drive A$4.1M of the A$5.2M annual brokerage revenue. The bottom 40% of accounts generate less than 3% of revenue combined.</p>
+    </div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num">2</div>
+    <div class="finding-text">
+      <h4>47 high-value clients showing active churn signals</h4>
+      <p>47 clients in the top revenue tier show at least two churn signals — 60+ days of inactivity, AUM decline of 20%+, or trading frequency reduction of 50%+. Combined revenue at risk: A$3.2M annually.</p>
+    </div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num">3</div>
+    <div class="finding-text">
+      <h4>CFD and margin lending clients churn 2.3x faster than equity clients</h4>
+      <p>Product mix analysis reveals CFD traders have significantly shorter engagement cycles. Clients who hold both equity and CFD products have 40% lower churn rates than single-product clients.</p>
+    </div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num">4</div>
+    <div class="finding-text">
+      <h4>Q1 accounts for 34% of annual revenue but only 18% of active accounts</h4>
+      <p>Seasonal concentration risk — Q1 trading activity drives disproportionate revenue. The sales team should focus retention efforts before the Q1 trading period begins.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <h2>Executive Recommendation</h2>
+
+  <div class="exec-summary">
+    <h3>Sales Team Briefing — Client Retention Priority</h3>
+    <p>Our analysis of 200,000+ client transactions has identified a material revenue risk that requires immediate action.</p>
+    <p><strong style="color:white;">Situation:</strong> 47 high-value clients representing A$3.2M in annual brokerage revenue are showing active churn signals including 60+ days of inactivity and AUM decline exceeding 20%.</p>
+    <p><strong style="color:white;">Recommendation:</strong></p>
+    <p class="exec-rec">1. Immediate outreach to the top 15 at-risk clients this week — prioritise accounts with AUM decline greater than 30% and no trades in 90+ days.</p>
+    <p class="exec-rec">2. Cross-sell equity products to the 23 single-product CFD clients in the high-value tier — multi-product clients show 40% lower churn.</p>
+    <p class="exec-rec">3. Schedule Q1 retention campaign for January — targeting the 47 flagged clients before the peak trading season.</p>
+    <p>Protecting these 47 accounts protects 62% of at-risk revenue with targeted effort on less than 10% of the total client base.</p>
+  </div>
+
+  <!-- GITHUB -->
+  <div class="github-cta">
+    <h3>View the full project on GitHub</h3>
+    <p>Dataset, SQL queries, Python analysis notebook, Power BI file, and README</p>
+    <a href="https://github.com/Suyashthakuri" class="github-btn" target="_blank">View on GitHub ↗</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>Suyash Thakuri · Financial Data Analyst · Sydney, NSW · suyashthakuri@gmail.com</p>
+</footer>
+
+</body>
+</html>
